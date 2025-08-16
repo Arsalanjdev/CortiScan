@@ -1,0 +1,27 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.4
+    hooks:
+      - id: ruff
+        args: ["--fix", "--ignore=F401"]  # Explicitly ignore unused imports
+      - id: ruff-format
+#        args: ["--fix"]  # Only check formatting, no changes
+#
+#  - repo: https://github.com/psf/black
+#    rev: 24.4.2
+#    hooks:
+#      - id: black
+#        args: [--line-length=88]  # Optional: set your preferred line length
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.9.0
+    hooks:
+      - id: mypy
+        additional_dependencies: []
+        # Add any mypy dependencies here if needed
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        args: ["--profile", "black"]  # Ensures compatibility with black
