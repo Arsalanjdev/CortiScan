@@ -2,7 +2,6 @@ import io
 import threading
 import time
 
-import requests  # Added missing import
 import streamlit as st
 import uvicorn
 from fastapi import FastAPI
