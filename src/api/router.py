@@ -1,20 +1,21 @@
 from fastapi import APIRouter, File, UploadFile
-from schemas import PredictionResponse
 
+from src.api.schemas import PredictionResponse
 from src.model.inference import infer
 from src.model.preprocess import normalize_single_file
 
 router = APIRouter()
 
 
-@router.get("/predict/", response_model=PredictionResponse, status_code=200)
+@router.post("/predict/", response_model=PredictionResponse, status_code=200)
 async def upload_file(
     image: UploadFile = File(
-        ..., description="Upload MRI brain picture.", max_length=1024 * 1024
+        ...,
+        description="Upload MRI brain picture.",
     ),
 ):
     # preprocessing the image
-    image = normalize_single_file(image)
+    image = await normalize_single_file(image)
 
     # inference
     label, confidence = infer(image)

@@ -1,6 +1,6 @@
 import onnxruntime as ort
 
-session = ort.InferenceSession("brain_mri.onnx")
+session = ort.InferenceSession("brain_model.onnx")
 input_name = session.get_inputs()[0].name
 output_name = session.get_outputs()[0].name
 
@@ -30,7 +30,7 @@ def infer(img_batch):
     pred = outputs[0]  # Raw output scores (logits or probabilities)
 
     pred_idx = pred.argmax(axis=1)[0]
-    classes = ["no_tumor", "tumor"]
+    classes = ["No Tumor", "Tumor"]
 
     # Confidence of the predicted class for the first image
     confidence = pred[0, pred_idx]
