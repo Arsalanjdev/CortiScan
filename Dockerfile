@@ -1,14 +1,28 @@
+# syntax=docker/dockerfile:1.4
 FROM python:3.12-slim
+ENV PYTHONPATH=/app/src
 
-# Install uv.
+# Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-# Copy the application into the container.
-COPY . /app
+# Create virtual environment outside app directory
+RUN mkdir /venv && uv venv --seed /venv
 
-# Install the application dependencies.
+# Copy application files
+COPY ./src /app/src
 WORKDIR /app
-RUN uv sync --frozen --no-cache
 
-# Run the application.
-CMD ["/app/.venv/bin/fastapi", "run", "app/main.py", "--port", "80", "--host", "0.0.0.0"]
+# Install dependencies using temporary file
+ENV UV_PROGRESS=true
+ENV UV_HTTP_TIMEOUT=300
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    mkdir -p /tmp/build && \
+    uv pip compile pyproject.toml --output-file=/tmp/build/requirements.txt && \
+    uv pip install --python /venv/bin/python -r /tmp/build/requirements.txt && \
+    rm -rf /tmp/build
+
+ENV PATH="/venv/bin:$PATH"
+EXPOSE 8000 8501
+CMD ["sleep", "infinity"]

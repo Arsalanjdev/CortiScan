@@ -1,18 +1,33 @@
 import io
-import threading
-import time
 
-import requests  # Added missing import
+import requests
 import streamlit as st
-import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 
+from api.router import router
+
+# FastAPI setup - Do this once at the top
+app = FastAPI()
+app.include_router(router)
+
+# Add CORS middleware to FastAPI app
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# def run_api():
+#     """Function to run FastAPI server"""
+#     uvicorn.run(fastapi_app, host="0.0.0.0", port=8000)
+
+
 st.title("Brain Tumor Detection")
 
-r = requests.get("http://localhost:8000/docs")
-print(r.status_code)
 # # Start FastAPI in background only once
 # if 'api_started' not in st.session_state:
 #     st.session_state.api_started = True
@@ -36,7 +51,7 @@ if uploaded_file is not None:
         buffered = io.BytesIO()
         image.save(buffered, format="PNG")
         buffered.seek(0)
-        files = {"image": ("image.png", buffered, "image/png")}
+        files = {"file": ("image.png", buffered, "image/png")}
 
         try:
             # Send request to FastAPI with timeout

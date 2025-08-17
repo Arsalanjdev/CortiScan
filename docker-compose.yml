@@ -1,0 +1,26 @@
+services:
+  fastapi:
+    build: .
+    container_name: fastapi_app
+    command: uv run uvicorn src.run_fastapi:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/app/src:cached  # optional: :cached speeds up Docker on macOS/Windows
+#      -  /app/.venv
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  streamlit:
+    build: .
+    container_name: streamlit_app
+    command: uv run streamlit run src/run_streamlit.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./src:/app/src:cached
+#      - /app/.venv
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - fastapi
