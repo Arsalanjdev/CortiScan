@@ -2,7 +2,9 @@
 
 An interactive web application for **brain tumor detection** using a **custom-trained CNN model** with transfer learning. Users can upload MRI scans and get predictions in real time through a **Streamlit frontend** powered by a **FastAPI backend** using ONNX inference.
 
-st.markdown("![Brain Tumor Illustration](tumor_detected.png)")
+<p align="center">
+  <img src="tumor_detected.png" alt="Brain Tumor Illustration" width="400" height="427">
+</p>
 ---
 
 ## Features
@@ -35,8 +37,8 @@ The training process and model evaluation can be found in the Kaggle notebook:\ 
 Clone the repository and run the app using Docker Compose:
 
 ```bash
-git clone https://github.com/yourusername/brain-tumor-webapp.git
-cd brain-tumor-webapp
+git clone https://github.com/Arsalanjdev/CortiScan
+cd CortiScan
 docker-compose up --build
 ```
 
