@@ -2,7 +2,7 @@
 
 An interactive web application for **brain tumor detection** using a **custom-trained CNN model** with transfer learning. Users can upload MRI scans and get predictions in real time through a **Streamlit frontend** powered by a **FastAPI backend** using ONNX inference.
 
-st.markdown("![Brain Tumor Illustration](https://your-image-url.com/image.png)")
+st.markdown("![Brain Tumor Illustration](tumor_detected.png)")
 ---
 
 ## Features
